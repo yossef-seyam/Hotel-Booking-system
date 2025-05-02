@@ -16,6 +16,7 @@ public class HotelManager {
     ArrayList<Customer> customerList = new ArrayList<>();
     ArrayList<Booking> bookingList = new ArrayList<>();
     //mo branch
+    // 2
 
     /****** Methods ******/
     void addRoom(String roomType, int roomNumber, double price){
