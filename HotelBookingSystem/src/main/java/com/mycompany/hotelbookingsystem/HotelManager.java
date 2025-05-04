@@ -12,59 +12,88 @@ import java.util.ArrayList;
  */
 public class HotelManager {
     /****** Data Fields ******/
-    ArrayList<Room> roomList = new ArrayList<>();
-    ArrayList<Customer> customerList = new ArrayList<>();
-    ArrayList<Booking> bookingList = new ArrayList<>();
-
-    /****** Methods ******/
-    void addRoom(String roomType, int roomNumber, double price){
-        Room room = null ;
-        switch(roomType){
-            case "SingleRoom": room = new SingleRoom(price); break;
-            case "DoubleRoom": room = new DoubleRoom(price); break;
-            case "SuiteRoom": room = new SuiteRoom(price); break;
-            default: System.out.println("Invalid Room Type");
+    ArrayList<Room> roomList;
+    ArrayList<Customer> customerList;
+    ArrayList<Booking> bookingList;
+    
+    
+    public HotelManager(){
+        roomList = new ArrayList<>();
+        customerList = new ArrayList<>();
+        bookingList = new ArrayList<>();
+    }
+    public Booking makeReservation(Customer customer, Room room, String startDate, String endDate) {
+        if (room.IsAvailable()) {
+              Booking booking = new Booking(customer, room, startDate, endDate);
+              bookingList.add(booking);
+              room.setIsAvailable(false);
+              System.out.println("Booking created for customer " + customer.getName());
+              return booking;
+        }
+        else{
+             System.out.println("Room is not available.");
+             return null;
             
-            /*exception handling 
-                user typed invalid room type 
-                user typed other data type except string
-            */
-            return ;    
         }
+    }
+    public void cancelReservation(int bookingID){
+            for(Booking b :bookingList){
+                if(bookingID == b.getBookingID()){
+                    bookingList.remove(b);
+                    b.getRoom().setIsAvailable(true);
+                    System.out.println("Booking ID [" + bookingID + "] has been cancelled.");
+                    return;          
+                }
+                
+            }
+             System.out.println("No booking found with ID: " + bookingID);     
+        }
+    public void addRoom(Room room) {
         roomList.add(room);
+        System.out.println("Room added: " + room.getRoomID());
     }
-    void addCustomer(String customerName, String customerEmail){
-        Customer customer = new Customer(customerName,customerEmail);
-        customerList.add(customer);
-    }
-    void makeBooking(){
-        Booking booking = new Booking();
-        bookingList.add(booking);
-    }
-    void displayAllRooms(){
-        for (Room room : roomList) {
-            System.out.println(room + " ");
-        }
-    }
-    void displayAllCustomers(){
-        for (Customer customer : customerList) {
-            System.out.println(customer + " ");
-        }
-    }
-    void displayAllBookings(){
-        for (Booking booking : bookingList) {
-            System.out.println(booking + " ");
-        }
-    }
-    void sortRooms_byPrice(){
 
+    public void addCustomer(Customer customer) {
+        customerList.add(customer);
+        System.out.println("Customer added: " + customer.getName());
+    }
+
+ 
+    public Room findRoomByID(int roomID) {
+        for (Room r : roomList) {
+            if (r.getRoomID() == roomID) return r;
+        }
+        return null;
+    }
+
+    public Customer findCustomerByID(int customerID) {
+        for (Customer c : customerList) {
+            if (c.getID() == customerID) return c;
+        }
+        return null;
+    }
+
+ 
+    public void listAvailableRooms() {
+    for (Room r : roomList) {
+        if (r.IsAvailable()) {
+            r.displayInfo();
+        }
+    }
+}
+
+    public void listAllCustomers() {
+        for (Customer c : customerList) {
+            c.displayInfo();
+        }
     }
     
-    
-    public static void main(String[] args) {
-        
-        
-        
+    public void listBookings() {
+        for (Booking b : bookingList) {
+            b.displayInfo();
+        }
         
     }
 }
+
+       
