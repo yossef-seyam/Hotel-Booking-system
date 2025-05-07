@@ -9,7 +9,7 @@ package com.mycompany.hotelbookingsystem;
  * @author user
  */
 public abstract class Room {
-     protected double price;
+ protected double price;
  protected String roomType;
  protected int roomID;
  protected boolean isAvailable;
@@ -55,6 +55,6 @@ public abstract class Room {
  }
 
  // Abstract method
- public abstract void displayInfo();
+ public abstract String displayInfo();
     
 }
