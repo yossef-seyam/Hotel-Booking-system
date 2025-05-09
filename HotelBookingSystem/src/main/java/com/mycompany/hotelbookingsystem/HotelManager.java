@@ -22,20 +22,22 @@ public class HotelManager {
         customerList = new ArrayList<>();
         bookingList = new ArrayList<>();
     }
-    public Booking makeReservation(Customer customer, Room room, String startDate, String endDate) {
-        if (room.IsAvailable()) {
-              Booking booking = new Booking(customer, room, startDate, endDate);
-              bookingList.add(booking);
-              room.setIsAvailable(false);
-              System.out.println("Booking created for customer " + customer.getName());
-              return booking;
+   public Booking makeReservation(Customer customer, Room room, String startDate, String endDate) {
+    try {
+        if (!room.IsAvailable()) {
+            throw new Exception("The room is not available for the selected dates.");
         }
-        else{
-             System.out.println("Room is not available.");
-             return null;
-            
-        }
+
+        Booking booking = new Booking(customer, room, startDate, endDate);
+        bookingList.add(booking);
+        room.setIsAvailable(false);
+        System.out.println("Booking created for customer " + customer.getName());
+        return booking;
+    } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
     }
+    return null;
+}
     public void cancelReservation(int bookingID){
             for(Booking b :bookingList){
                 if(bookingID == b.getBookingID()){
@@ -59,19 +61,24 @@ public class HotelManager {
     }
 
  
-    public Room findRoomByID(int roomID) {
-        for (Room r : roomList) {
-            if (r.getRoomID() == roomID) return r;
+public Room findRoomByID(int roomID) throws Exception {
+    for (Room r : roomList) {
+        if (r.getRoomID() == roomID) {
+            return r;
         }
-        return null;
     }
+    // If room is not found, throw the exception
+    throw new Exception("Room with ID " + roomID + " not found.");
+}
 
-    public Customer findCustomerByID(int customerID) {
-        for (Customer c : customerList) {
-            if (c.getID() == customerID) return c;
-        }
-        return null;
+public Customer findCustomerByID(int customerID) throws Exception {
+    for (Customer c : customerList) {
+        if (c.getID() == customerID) return c;
     }
+    // If function is not found throw the exception 
+    throw new Exception("Customer with ID " + customerID + " not found.");
+     
+}
 
  
     public void listAvailableRooms() {
