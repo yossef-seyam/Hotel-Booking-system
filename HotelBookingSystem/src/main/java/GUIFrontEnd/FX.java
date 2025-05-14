@@ -33,6 +33,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+
+
 
 
 /**
@@ -44,57 +51,114 @@ public class FX extends Application {
     HotelManager Hotel = new HotelManager();
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Label welcomeLabel = new Label("Welcome");
-        welcomeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 36));
+        // Create layout for the first scene
+        GridPane pane = new GridPane();
+        pane.setAlignment(Pos.CENTER);
+        pane.setPadding(new Insets(15));
+        pane.setHgap(10);
+        pane.setVgap(10);
 
-        Label subLabel = new Label("to Seyam Hotel");
-        subLabel.setFont(Font.font("Arial", 24));
+        Image image = new Image("file:/D:/Hotel.jpg");
+        ImageView imageview = new ImageView(image);
+        imageview.setFitWidth(200);
+        imageview.setFitHeight(200);
 
-        ImageView hotelImage = new ImageView(new Image("C:\\Users\\user\\Downloads\\hotel.png"));
-        hotelImage.setFitWidth(300);
-        hotelImage.setPreserveRatio(true);
+        Label welcomeLabel = new Label("Welcome to Our Hotel");
+        welcomeLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        Button nextButton = new Button("Next");
+        Label namelabel = new Label("Name:");
+        TextField namefield = new TextField();
 
-        VBox firstLayout = new VBox(20);
-        firstLayout.setAlignment(Pos.CENTER);
-        firstLayout.getChildren().addAll(welcomeLabel, subLabel, hotelImage, nextButton);
-        
-        Scene firstScene = new Scene(firstLayout, 500, 500);
+        Label emaillabel = new Label("Email:");
+        TextField emailfield = new TextField();
 
-        // Second screen with options
-        Label chooseLabel = new Label("Please select one of the options:");
-        chooseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        Button nextbutton = new Button("Next");
+        Button exitbutton = new Button("Exit");
 
-        Button viewRoomsButton = new Button("View Available Rooms");
-        Button offersButton = new Button("View Room Offers");
-        Button bookRoomButton = new Button("Book a Room");
-        Button viewBookingButton = new Button("View Booking Details");
-        Button cancelButton = new Button("Cancel Reservation");
-        Button helpButton = new Button("Help");
-        Button exitButton = new Button("Exit");
-
-        //viewRoomsButton.setOnAction(e -> Hotel.listAvailableRooms());
-        helpButton.setOnAction(e -> System.out.println("Contact support@seyamhotel.com")); // Replace with real help window
-        bookRoomButton.setOnAction(e -> showBookingScene(primaryStage));
-        exitButton.setOnAction(e -> primaryStage.close());
-
-        VBox secondLayout = new VBox(15);
-        secondLayout.setAlignment(Pos.CENTER);
-        secondLayout.getChildren().addAll(
-            chooseLabel, viewRoomsButton, offersButton, bookRoomButton,
-            viewBookingButton, cancelButton, helpButton, exitButton
+        // Disable next button unless both fields are filled
+        nextbutton.disableProperty().bind(
+            Bindings.or(
+                namefield.textProperty().isEmpty(),
+                emailfield.textProperty().isEmpty()
+            )
         );
 
-        Scene secondScene = new Scene(secondLayout, 500, 500);
+        pane.add(welcomeLabel, 1, 0);
+        pane.add(namelabel, 0, 1);
+        pane.add(namefield, 1, 1);
+        pane.add(emaillabel, 0, 2);
+        pane.add(emailfield, 1, 2);
+        pane.add(nextbutton, 1, 3);
+        pane.add(exitbutton, 2, 3);
 
-        // Switch scenes
-        nextButton.setOnAction(e -> primaryStage.setScene(secondScene));
+        exitbutton.setOnAction(e -> Platform.exit());
 
-        // Show first scene
-        primaryStage.setTitle("Seyam Hotel");
-        primaryStage.setScene(firstScene);
+        nextbutton.setOnAction(e -> {
+            String name = namefield.getText();
+
+            Label nameLabel = new Label("Hi " + name);
+            nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+            // Create image views
+            ImageView imageviewsingle = new ImageView(new Image("file:/D:/Single_Room.jpg"));
+            ImageView imageviewdouble = new ImageView(new Image("file:/D:/DoubleRoom.jpg"));
+            ImageView imageviewsuite = new ImageView(new Image("file:/D:/Suite.jpg"));
+
+            imageviewsingle.setFitWidth(200);
+            imageviewsingle.setFitHeight(200);
+            imageviewdouble.setFitWidth(200);
+            imageviewdouble.setFitHeight(200);
+            imageviewsuite.setFitWidth(200);
+            imageviewsuite.setFitHeight(200);
+
+            // Add images in a horizontal box
+            HBox roomsBox = new HBox(20);
+            roomsBox.setAlignment(Pos.CENTER);
+            roomsBox.setPadding(new Insets(20));
+            roomsBox.getChildren().addAll(imageviewsingle, imageviewdouble, imageviewsuite);
+
+            // Room type buttons
+            Button btnSingle = new Button("SingleRoom");
+            Button btnDouble = new Button("DoubleRoom");
+            Button btnSuite = new Button("Suite");
+
+            HBox buttonBox = new HBox(180);
+            buttonBox.setAlignment(Pos.CENTER);
+            buttonBox.getChildren().addAll(btnSingle, btnDouble, btnSuite);
+            
+            Pane promo = new Pane();
+            Label pc =new Label("Enter Your PromoCode");
+            pc.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+            TextField Promocode = new TextField();
+            Promocode.setMaxSize(200, 70);
+            GridPane Exit = new GridPane();
+             Exit.setAlignment(Pos.CENTER);
+           Exit.add(exitbutton, 0, 0);
+            
+            promo.getChildren().add(Promocode);
+            // Final layout
+            VBox main = new VBox(20);
+            main.setAlignment(Pos.CENTER);
+            main.getChildren().addAll(nameLabel, roomsBox, buttonBox,pc,Promocode,Exit);
+            
+            
+            
+
+            Scene scene2 = new Scene(main, 750, 500);
+            primaryStage.setScene(scene2);
+            primaryStage.setTitle("Available Rooms");
+            primaryStage.show();
+        });
+
+        VBox mainpage = new VBox(20);
+        mainpage.setAlignment(Pos.CENTER);
+        mainpage.getChildren().addAll(imageview, pane);
+
+        Scene scene = new Scene(mainpage, 500, 500);
+        primaryStage.setTitle("Hotel");
+        primaryStage.setScene(scene);
         primaryStage.show();
+
     }
     public void showBookingScene(Stage stage) {
     VBox layout = new VBox(10);
