@@ -13,8 +13,8 @@ public class DoubleRoom extends Room
  
  private boolean SeaView;
 
-    public DoubleRoom(boolean SeaView, double price, String roomType, int roomID) {
-        super(price, roomType, roomID);
+    public DoubleRoom(boolean SeaView, String roomType ,double price,int roomID) {
+        super(roomType,price,roomID);
         this.SeaView = SeaView;
     }
 

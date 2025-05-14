@@ -8,13 +8,13 @@ package com.mycompany.hotelbookingsystem;
  *
  * @author dell
  */
-public class SingleRoom extends Room 
-{
- 
- private boolean SeaView;
+public class SingleRoom extends Room {
 
-    public SingleRoom(boolean SeaView, double price, String RoomType, int RoomID) {
-        super(price, RoomType, RoomID);
+    
+    private boolean SeaView;
+
+    public SingleRoom(boolean SeaView, String RoomType, double price, int roomID) {
+        super(RoomType, price,roomID);
         this.SeaView = SeaView;
     }
 
@@ -26,14 +26,10 @@ public class SingleRoom extends Room
         this.SeaView = SeaView;
     }
 
-   
-    
-    public String displayInfo()
-    {
-    return "Room Type:" + roomType + " it's Price:" + price + " The Room Id:" + roomID ;
-    
+    @Override
+    public String displayInfo() {
+        return "Room Type:" + roomType + " it's Price:" + price + " The Room Id:" + roomID;
+
     }
-    
- 
- 
- }
+
+}

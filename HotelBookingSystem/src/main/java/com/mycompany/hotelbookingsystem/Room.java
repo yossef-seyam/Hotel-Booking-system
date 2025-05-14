@@ -8,16 +8,18 @@ package com.mycompany.hotelbookingsystem;
  *
  * @author user
  */
-public abstract class Room {
+public abstract class Room  {
  protected double price;
  protected String roomType;
  protected int roomID;
  protected boolean isAvailable;
 
- public Room(double price, String roomType, int roomID) {
-     this.price = price;
+ public Room(String roomType,double price , int roomID) {
+     
      this.roomType = roomType;
      this.roomID = roomID;
+     this.price = price;
+     
      this.isAvailable = true;
  }
 

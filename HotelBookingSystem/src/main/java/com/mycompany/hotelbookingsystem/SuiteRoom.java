@@ -8,11 +8,13 @@ package com.mycompany.hotelbookingsystem;
  *
  * @author dell
  */
-public class SuiteRoom extends Room{
-   private boolean SeaView;
+public class SuiteRoom extends Room {
 
-    public SuiteRoom(double price, String roomType, int roomID) {
-        super(price, roomType, roomID);
+    private boolean SeaView;
+
+    public SuiteRoom(String roomType, double price,int roomID) {
+        super(roomType, price,roomID);
+
     }
 
     public boolean isSeaView() {
@@ -22,13 +24,11 @@ public class SuiteRoom extends Room{
     public void setSeaView(boolean SeaView) {
         this.SeaView = SeaView;
     }
+
     @Override
-     public String displayInfo()
-    {
-    return "Room Type:" + roomType + " it's Price:" + price + " The Room Id:" + roomID ;
-    
+    public String displayInfo() {
+        return "Room Type:" + roomType + " it's Price:" + price + " The Room Id:" + roomID;
+
     }
-    
-    
-    
+
 }

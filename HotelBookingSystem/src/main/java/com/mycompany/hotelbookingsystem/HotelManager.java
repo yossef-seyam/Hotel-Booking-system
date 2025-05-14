@@ -1,106 +1,166 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.hotelbookingsystem;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 /**
  *
  * @author user
  */
+import java.util.ArrayList;
+
 public class HotelManager {
-    /****** Data Fields ******/
-    ArrayList<Room> roomList;
-    ArrayList<Customer> customerList;
-    ArrayList<Booking> bookingList;
-    
-    
-    public HotelManager(){
+
+    private ArrayList<Room> roomList;
+    private ArrayList<Customer> customerList;
+    private ArrayList<Booking> bookingList;
+
+    public HotelManager() {
         roomList = new ArrayList<>();
         customerList = new ArrayList<>();
         bookingList = new ArrayList<>();
     }
-   public Booking makeReservation(Customer customer, Room room, String startDate, String endDate) {
-    try {
-        if (!room.IsAvailable()) {
-            throw new Exception("The room is not available for the selected dates.");
-        }
 
-        Booking booking = new Booking(customer, room, startDate, endDate);
-        bookingList.add(booking);
-        room.setIsAvailable(false);
-        System.out.println("Booking created for customer " + customer.getName());
-        return booking;
-    } catch (Exception e) {
-        System.out.println("Error: " + e.getMessage());
-    }
-    return null;
-}
-    public void cancelReservation(int bookingID){
-            for(Booking b :bookingList){
-                if(bookingID == b.getBookingID()){
-                    bookingList.remove(b);
-                    b.getRoom().setIsAvailable(true);
-                    System.out.println("Booking ID [" + bookingID + "] has been cancelled.");
-                    return;          
-                }
-                
-            }
-             System.out.println("No booking found with ID: " + bookingID);     
+    // دالة لتجهيز الغرف الجاهزة
+    public void initializeRooms() {
+        // إضافة 10 غرف Single
+        for (int i = 1; i <= 10; i++) {
+            addRoom(new SingleRoom(false, "Single Room", 100.0, 100 + i)); // السعر 100
         }
+        // إضافة 10 غرف Double
+        for (int i = 1; i <= 10; i++) {
+            addRoom(new DoubleRoom(true, "Double Room", 150.0, 200 + i)); // السعر 150
+        }
+        // إضافة 5 أجنحة Suite
+        for (int i = 1; i <= 5; i++) {
+            addRoom(new SuiteRoom("Suite Room", 300.0, 300 + i)); // السعر 300
+        }
+    }
+
+    // إضافة غرفة إلى القائمة
     public void addRoom(Room room) {
         roomList.add(room);
-        System.out.println("Room added: " + room.getRoomID());
+        //System.out.println("Room added: " + room.getRoomID());
     }
 
-    public void addCustomer(Customer customer) {
-        customerList.add(customer);
-        System.out.println("Customer added: " + customer.getName());
-    }
-
- 
-public Room findRoomByID(int roomID) throws Exception {
-    for (Room r : roomList) {
-        if (r.getRoomID() == roomID) {
-            return r;
+    // حجز غرفة لعميل
+    public Booking makeReservation(Customer customer, Room room, String startDate, String endDate) {
+        if (room.IsAvailable()) {
+            Booking booking = new Booking(customer, room, startDate, endDate);
+            bookingList.add(booking);
+            room.setIsAvailable(false); // تغيير حالة الغرفة إلى غير متاحة
+            System.out.println("Booking created for customer " + customer.getName());
+            return booking;
+        } else {
+            System.out.println("Room is not available.");
+            return null;
         }
     }
-    // If room is not found, throw the exception
-    throw new Exception("Room with ID " + roomID + " not found.");
-}
 
-public Customer findCustomerByID(int customerID) throws Exception {
-    for (Customer c : customerList) {
-        if (c.getID() == customerID) return c;
-    }
-    // If function is not found throw the exception 
-    throw new Exception("Customer with ID " + customerID + " not found.");
-     
-}
-
- 
-    public void listAvailableRooms() {
-    for (Room r : roomList) {
-        if (r.IsAvailable()) {
-            r.displayInfo();
+    // إلغاء الحجز باستخدام ID
+    public void cancelReservation(int bookingID) {
+        for (Booking b : bookingList) {
+            if (bookingID == b.getBookingID()) {
+                bookingList.remove(b);
+                b.getRoom().setIsAvailable(true); // إعادة الغرفة لتكون متاحة
+                System.out.println("Booking ID [" + bookingID + "] has been cancelled.");
+                return;
+            }
         }
+        System.out.println("No booking found with ID: " + bookingID);
     }
-}
 
+    // عرض الغرف المتاحة
+    public void listAvailableRooms(int select) {
+        switch (select){
+            case 0: 
+                for (Room r : roomList) {
+                    if (r.IsAvailable()) {
+                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                    }
+                }
+                break;
+            case 1: 
+                for (Room r : roomList) {
+                    if (r.IsAvailable() && r instanceof SingleRoom) {
+                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                    }
+                }
+                break;
+            case 2: 
+                for (Room r : roomList) {
+                    if (r.IsAvailable() && r instanceof DoubleRoom) {
+                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                    }
+                }
+                break;
+            case 3: 
+                for (Room r : roomList) {
+                    if (r.IsAvailable() && r instanceof SuiteRoom) {
+                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                    }
+                }
+                break;
+            
+            
+        }
+        
+    }
+
+    // عرض جميع العملاء
     public void listAllCustomers() {
         for (Customer c : customerList) {
             c.displayInfo();
         }
     }
-    
+
+    // عرض جميع الحجوزات
     public void listBookings() {
         for (Booking b : bookingList) {
             b.displayInfo();
         }
-        
+    }
+
+    // العثور على غرفة باستخدام RoomID
+    public Room findRoomByID(int roomID) {
+        for (Room r : roomList) {
+            if (r.getRoomID() == roomID) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    // العثور على عميل باستخدام ID
+    public Customer findCustomerByID(int customerID) {
+        for (Customer c : customerList) {
+            if (c.getID() == customerID) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    // إضافة عميل إلى القائمة
+    public void addCustomer(Customer customer) {
+        customerList.add(customer);
+        System.out.println("Customer added: " + customer.getName());
+
+    }
+
+    public void applyDiscount(String promoCode) {
+        if (promoCode.equals("seyam1")) {
+            System.out.println("Applying 20% discount on all available rooms.");
+            for (Room room : roomList) {
+                double originalPrice = room.getPrice();
+                double discountedPrice = originalPrice * 0.8;
+                room.setPrice(discountedPrice);
+                System.out.println("New price for room " + room.getRoomID() + ": " + discountedPrice);
+            }
+        } else {
+            System.out.println("Invalid promo code.");
+        }
     }
 }
-
-       

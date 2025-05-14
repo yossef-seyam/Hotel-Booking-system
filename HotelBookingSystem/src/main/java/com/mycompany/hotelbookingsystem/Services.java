@@ -9,5 +9,8 @@ package com.mycompany.hotelbookingsystem;
  * @author user
  */
 public interface Services {
-    
+    public void requestService(Customer customer, Room room);
+    public double getPrice();
+    public String getServiceDescription();
+            
 }

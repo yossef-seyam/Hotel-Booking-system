@@ -9,12 +9,12 @@ package com.mycompany.hotelbookingsystem;
  * @author user
  */
 public class Customer {
-    private int ID;
+    private static int ID = 1010;
     private String name;
     private String email;
 
-    public Customer(int ID, String name, String email) {
-        this.ID = ID;
+    public Customer(String name, String email) {
+        ID ++;  //ID removed
         this.name = name;
         this.email = email;
     }
