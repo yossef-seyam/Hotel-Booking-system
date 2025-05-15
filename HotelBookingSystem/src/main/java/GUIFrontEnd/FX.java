@@ -25,7 +25,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -41,145 +43,142 @@ import javafx.stage.Stage;
  */
 public class FX extends Application {
 
-    HotelManager Hotel = new HotelManager();
+    private HotelManager hotelManager = new HotelManager();
+    private TextArea outputArea = new TextArea();
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Label welcomeLabel = new Label("Welcome");
-        welcomeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 36));
+        hotelManager.initializeRooms();
 
-        Label subLabel = new Label("to Seyam Hotel");
-        subLabel.setFont(Font.font("Arial", 24));
+        primaryStage.setTitle("ELSONS Hotel Booking System");
 
-        ImageView hotelImage = new ImageView(new Image("C:\\Users\\user\\Downloads\\hotel.png"));
-        hotelImage.setFitWidth(300);
-        hotelImage.setPreserveRatio(true);
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(15));
 
-        Button nextButton = new Button("Next");
+        Label welcomeLabel = new Label("Welcome to ELSONS Hotel");
+        outputArea.setEditable(false);
+        outputArea.setPrefHeight(200);
 
-        VBox firstLayout = new VBox(20);
-        firstLayout.setAlignment(Pos.CENTER);
-        firstLayout.getChildren().addAll(welcomeLabel, subLabel, hotelImage, nextButton);
+        Button viewAvailableRoomsBtn = new Button("1) View available rooms");
+        Button viewOffersBtn = new Button("2) View room offers");
+        Button bookRoomBtn = new Button("3) Book a room");
+        Button viewBookingBtn = new Button("4) View your booking details");
+        Button cancelBookingBtn = new Button("5) Cancel a reservation");
+        Button helpBtn = new Button("6) Help guide");
+        Button exitBtn = new Button("7) Exit");
+
         
-        Scene firstScene = new Scene(firstLayout, 500, 500);
 
-        // Second screen with options
-        Label chooseLabel = new Label("Please select one of the options:");
-        chooseLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        viewOffersBtn.setOnAction(e -> {
+            outputArea.clear();
+            outputArea.appendText("Room offers coming soon!\n");
+        });
 
-        Button viewRoomsButton = new Button("View Available Rooms");
-        Button offersButton = new Button("View Room Offers");
-        Button bookRoomButton = new Button("Book a Room");
-        Button viewBookingButton = new Button("View Booking Details");
-        Button cancelButton = new Button("Cancel Reservation");
-        Button helpButton = new Button("Help");
-        Button exitButton = new Button("Exit");
+        bookRoomBtn.setOnAction(e -> openBookingWindow());
 
-        //viewRoomsButton.setOnAction(e -> Hotel.listAvailableRooms());
-        helpButton.setOnAction(e -> System.out.println("Contact support@seyamhotel.com")); // Replace with real help window
-        bookRoomButton.setOnAction(e -> showBookingScene(primaryStage));
-        exitButton.setOnAction(e -> primaryStage.close());
+        viewBookingBtn.setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("View Booking");
+            dialog.setHeaderText("Enter your booking ID:");
+            dialog.showAndWait().ifPresent(id -> {
+                try {
+                    int bookingID = Integer.parseInt(id);
+                    outputArea.clear();
+                    outputArea.appendText(hotelManager.getBookingDetailsByID(bookingID));
+                } catch (NumberFormatException ex) {
+                    outputArea.appendText("Invalid Booking ID!\n");
+                }
+            });
+        });
 
-        VBox secondLayout = new VBox(15);
-        secondLayout.setAlignment(Pos.CENTER);
-        secondLayout.getChildren().addAll(
-            chooseLabel, viewRoomsButton, offersButton, bookRoomButton,
-            viewBookingButton, cancelButton, helpButton, exitButton
-        );
+        cancelBookingBtn.setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Cancel Booking");
+            dialog.setHeaderText("Enter your booking ID to cancel:");
+            dialog.showAndWait().ifPresent(id -> {
+                try {
+                    int bookingID = Integer.parseInt(id);
+                    hotelManager.cancelReservation(bookingID);
+                    outputArea.appendText("Booking cancelled successfully.\n");
+                } catch (NumberFormatException ex) {
+                    outputArea.appendText("Invalid Booking ID!\n");
+                }
+            });
+        });
 
-        Scene secondScene = new Scene(secondLayout, 500, 500);
+        helpBtn.setOnAction(e -> {
+            outputArea.clear();
+            outputArea.appendText("Help Guide will be available soon.\n");
+        });
 
-        // Switch scenes
-        nextButton.setOnAction(e -> primaryStage.setScene(secondScene));
+        exitBtn.setOnAction(e -> primaryStage.close());
 
-        // Show first scene
-        primaryStage.setTitle("Seyam Hotel");
-        primaryStage.setScene(firstScene);
+        root.getChildren().addAll(welcomeLabel, viewAvailableRoomsBtn, viewOffersBtn, bookRoomBtn,
+                viewBookingBtn, cancelBookingBtn, helpBtn, exitBtn, outputArea);
+
+        primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.show();
     }
-    public void showBookingScene(Stage stage) {
-    VBox layout = new VBox(10);
-    layout.setPadding(new Insets(20));
-    layout.setAlignment(Pos.CENTER);
+    private void openBookingWindow() {
+        Stage bookingStage = new Stage();
+        bookingStage.setTitle("Book a Room");
 
-    Label nameLabel = new Label("Enter your name:");
-    TextField nameField = new TextField();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(15));
 
-    Label emailLabel = new Label("Enter your email:");
-    TextField emailField = new TextField();
+        TextField nameField = new TextField();
+        nameField.setPromptText("Your Name");
+        TextField emailField = new TextField();
+        emailField.setPromptText("Your Email");
 
-    Label roomLabel = new Label("Select room type:");
-    ComboBox<String> roomTypeBox = new ComboBox<>();
-    roomTypeBox.getItems().addAll("Single Room", "Double Room", "Suite Room");
+        ComboBox<String> roomTypeCombo = new ComboBox<>();
+        roomTypeCombo.getItems().addAll("Single Room", "Double Room", "Suite Room");
+        roomTypeCombo.setPromptText("Select Room Type");
 
-    Label startDateLabel = new Label("Enter start date (dd/MM/yyyy):");
-    TextField startDateField = new TextField();
+        TextField roomIdField = new TextField();
+        roomIdField.setPromptText("Room ID");
 
-    Label endDateLabel = new Label("Enter end date (dd/MM/yyyy):");
-    TextField endDateField = new TextField();
+        TextField startDateField = new TextField();
+        startDateField.setPromptText("Start Date (dd/MM/yyyy)");
+        TextField endDateField = new TextField();
+        endDateField.setPromptText("End Date (dd/MM/yyyy)");
 
-    Button confirmBtn = new Button("Confirm Booking");
+        ComboBox<String> paymentMethod = new ComboBox<>();
+        paymentMethod.getItems().addAll("Visa", "PayPal");
+        paymentMethod.setPromptText("Select Payment Method");
 
-    Label resultLabel = new Label();
+        TextField paymentInfo = new TextField();
+        paymentInfo.setPromptText("Enter Payment Info");
 
-    confirmBtn.setOnAction(e -> {
-        String name = nameField.getText().trim();
-        String email = emailField.getText().trim();
-        String roomType = roomTypeBox.getValue();
-        String startDate = startDateField.getText().trim();
-        String endDate = endDateField.getText().trim();
+        Button confirmBtn = new Button("Confirm Booking");
 
-            // التحقق من الصيغة
-            if (name.isEmpty() || email.isEmpty() || roomType == null || startDate.isEmpty() || endDate.isEmpty()) {
-                resultLabel.setText("Please fill all fields.");
-                return;
-            }
-
-            // التحقق من صيغة التاريخ
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setLenient(false);
+        confirmBtn.setOnAction(e -> {
             try {
-                Date start = sdf.parse(startDate);
-                Date end = sdf.parse(endDate);
+                String name = nameField.getText();
+                String email = emailField.getText();
+                int roomID = Integer.parseInt(roomIdField.getText());
+                Room room = hotelManager.findRoomByID(roomID);
 
-                Customer customer = new Customer(name, email);
-                Hotel.addCustomer(customer);
-                Room room;
-
-                switch (roomType) {
-                    case "Single Room":
-                        //room = new SingleRoom(false, "Single Room");
-                        break;
-                    case "Double Room":
-                        //room = new DoubleRoom(true, "Double Room");
-                        break;
-                    case "Suite Room":
-                        //room = new SuiteRoom("Suite Room");
-                        break;
-                    default:
-                        resultLabel.setText("Invalid room type.");
-                        return;
+                if (!room.isAvailable) {
+                    outputArea.appendText("Room is not available.\n");
+                    bookingStage.close();
+                    return;
                 }
 
-                //Hotel.addRoom(room);
-                //Hotel.makeReservation(customer, room, startDate, endDate);
+                Customer customer = new Customer(name, email);
+                hotelManager.addCustomer(customer);
+                hotelManager.makeReservation(customer, room, startDateField.getText(), endDateField.getText());
 
-                resultLabel.setText("Reservation Confirmed for " + name + "!");
-            } catch (ParseException ex) {
-                resultLabel.setText("Invalid date format. Use dd/MM/yyyy.");
+                outputArea.appendText("Reservation Confirmed for " + name + "\n");
+                bookingStage.close();
+            } catch (Exception ex) {
+                outputArea.appendText("Error: " + ex.getMessage() + "\n");
             }
         });
 
-        layout.getChildren().addAll(
-                nameLabel, nameField,
-                emailLabel, emailField,
-                roomLabel, roomTypeBox,
-                startDateLabel, startDateField,
-                endDateLabel, endDateField,
-                confirmBtn,
-                resultLabel
-        );
+        layout.getChildren().addAll(nameField, emailField, roomTypeCombo, roomIdField,
+                startDateField, endDateField, paymentMethod, paymentInfo, confirmBtn);
 
-        Scene scene = new Scene(layout, 400, 600);
-        stage.setScene(scene);
+        bookingStage.setScene(new Scene(layout, 400, 500));
+        bookingStage.show();
     }
 }

@@ -12,7 +12,7 @@ public abstract class Room  {
  protected double price;
  protected String roomType;
  protected int roomID;
- protected boolean isAvailable;
+ public boolean isAvailable;
 
  public Room(String roomType,double price , int roomID) {
      
