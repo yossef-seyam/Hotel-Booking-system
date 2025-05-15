@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.ArrayList;
 
 public class HotelManager {
-    static  
-    private ArrayList<Room> roomList;
+
+    static private ArrayList<Room> roomList;
     private ArrayList<Customer> customerList;
     private ArrayList<Booking> bookingList;
 
@@ -88,7 +88,7 @@ public class HotelManager {
                         System.out.println(r.displayInfo());
                     }
                 }
-                
+
                 // Double Rooms
                 System.out.println("\n=======");
                 System.out.println("Double rooms");
@@ -98,7 +98,7 @@ public class HotelManager {
                         System.out.println(r.displayInfo());
                     }
                 }
-                
+
                 // Suite Rooms
                 System.out.println("\n=======");
                 System.out.println("Suite rooms");
@@ -189,19 +189,18 @@ public class HotelManager {
 
     }
 
-    public void applyDiscount(String promoCode,int roomID ) {
+    public void applyDiscount(String promoCode, int roomID) {
         if (promoCode.equals("seyam1")) {
             System.out.println("\nDiscount has been applied successfully!");
             System.out.println("Applying 20% discount on your booked room.");
             for (Room room : roomList) {
-                if (roomID == room.getRoomID()){
+                if (roomID == room.getRoomID()) {
                     double originalPrice = room.getPrice();
                     double discountedPrice = originalPrice * 0.8;
                     room.setPrice(discountedPrice);
                     System.out.println("New price for room " + room.getRoomID() + ": " + discountedPrice);
                 }
-                
-                
+
             }
         } else {
             System.out.println("Invalid promo code.");
@@ -217,13 +216,26 @@ public class HotelManager {
         }
         return sb.toString();
     }
+
     public String getBookingDetailsByID(int bookingID) {
-    for (Booking booking : bookingList) { // assuming you have a list called bookings
-        if (booking.getBookingID() == bookingID) {
-            return booking.toString(); // or a custom formatted string
+        for (Booking booking : bookingList) { // assuming you have a list called bookings
+            if (booking.getBookingID() == bookingID) {
+                return booking.toString(); // or a custom formatted string
+            }
         }
+        return "No booking found with ID: " + bookingID;
     }
-    return "No booking found with ID: " + bookingID;
-}
+
+    public ArrayList<Booking> getBookingList() {
+        return bookingList;
+    }
+
+    public ArrayList<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public ArrayList<Room> getRoomList() {
+        return roomList;
+    }
 
 }
