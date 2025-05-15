@@ -21,7 +21,7 @@ public class Main {
     static boolean end = true;
 
     public static void main(String[] args) {
-        //Application.launch(GUIFrontEnd.FX.class, args);
+        Application.launch(GUIFrontEnd.FX.class, args);
 
         Scanner input = new Scanner(System.in);
         HotelManager Hotel = new HotelManager();

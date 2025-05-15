@@ -8,7 +8,7 @@
     <properties> 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
         <maven.compiler.release>17</maven.compiler.release> 
-        <exec.mainClass>com.mycompany.hotelbookingsystem.HotelManager</exec.mainClass> 
+        <exec.mainClass>com.mycompany.hotelbookingsystem.Main</exec.mainClass>
         <javafx.platform>win</javafx.platform>
     </properties> 
     <dependencies> 

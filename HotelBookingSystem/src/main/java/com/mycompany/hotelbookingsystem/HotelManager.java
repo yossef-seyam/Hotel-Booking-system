@@ -35,7 +35,7 @@ public class HotelManager {
         }
         // إضافة 5 أجنحة Suite
         for (int i = 1; i <= 5; i++) {
-            addRoom(new SuiteRoom("Suite Room", 300.0, 300 + i)); // السعر 300
+            addRoom(new SuiteRoom(true,"Suite Room", 300.0, 300 + i)); // السعر 300
         }
     }
 
@@ -189,4 +189,21 @@ public class HotelManager {
             System.out.println("Invalid promo code.");
         }
     }
+   public ArrayList<Room> getRoomList() {
+    return roomList;
 }
+   public ArrayList<Booking> getBookingList() {
+    return bookingList;
+}
+      public ArrayList<Customer> getCustomerList() {
+    return customerList;
+}
+      
+   
+
+        
+
+    }
+
+
+
