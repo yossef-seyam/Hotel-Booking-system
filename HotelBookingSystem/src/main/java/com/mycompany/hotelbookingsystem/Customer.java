@@ -9,12 +9,13 @@ package com.mycompany.hotelbookingsystem;
  * @author user
  */
 public class Customer {
-    private static int ID = 1010;
+    private static int nextID = 1010;  // Static counter for generating unique IDs
+    private final int customerID;      // Instance field to store each customer's unique ID
     private String name;
     private String email;
 
     public Customer(String name, String email) {
-        ID ++;  //ID removed
+        this.customerID = ++nextID;    // Assign and increment the ID
         this.name = name;
         this.email = email;
     }
@@ -24,7 +25,7 @@ public class Customer {
     }
 
     public void displayInfo() {
-        System.out.println("Customer ID: " + ID);
+        System.out.println("Customer ID: " + customerID);
         System.out.println("Name: " + name);
         System.out.println("Email: " + email);
     }
@@ -34,7 +35,7 @@ public class Customer {
     }
 
     public int getID() {
-        return ID;
+        return customerID;
     }
 
     public String getEmail() {

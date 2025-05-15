@@ -1,0 +1,116 @@
+@startuml HotelBookingSystem
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+abstract class Room {
+    # double price
+    # String roomType
+    # int roomID
+    # boolean isAvailable
+    + Room(roomType: String, price: double, roomID: int)
+    + getPrice(): double
+    + getRoomType(): String
+    + getRoomID(): int
+    + IsAvailable(): boolean
+    + setPrice(price: double): void
+    + setRoomType(roomType: String): void
+    + setRoomID(roomID: int): void
+    + setIsAvailable(isAvailable: boolean): void
+    + {abstract} displayInfo(): String
+}
+
+class SingleRoom {
+    - boolean SeaView
+    + SingleRoom(SeaView: boolean, roomType: String, price: double, roomID: int)
+    + isSeaView(): boolean
+    + setSeaView(SeaView: boolean): void
+    + displayInfo(): String
+}
+
+class DoubleRoom {
+    - boolean hasSeaView
+    + DoubleRoom(hasSeaView: boolean, roomType: String, price: double, roomID: int)
+    + displayInfo(): String
+}
+
+interface Services {
+    + orderService(serviceType: String): void
+    + getServiceCost(serviceType: String): double
+}
+
+class SuiteRoom {
+    - boolean SeaView
+    + SuiteRoom(roomType: String, price: double, roomID: int)
+    + isSeaView(): boolean
+    + setSeaView(SeaView: boolean): void
+    + displayInfo(): String
+    + orderService(serviceType: String): void
+    + getServiceCost(serviceType: String): double
+}
+
+class Customer {
+    - {static} int nextID
+    - final int customerID
+    - String name
+    - String email
+    + Customer(name: String, email: String)
+    + requestService(serviceType: String): void
+    + displayInfo(): void
+    + getName(): String
+    + getID(): int
+    + getEmail(): String
+}
+
+class Booking {
+    - {static} int nextBookingID
+    - final int bookingID
+    - Customer customer
+    - Room room
+    - String startDate
+    - String endDate
+    + Booking(customer: Customer, room: Room, startDate: String, endDate: String)
+    + getBookingID(): int
+    + getCustomer(): Customer
+    + getRoom(): Room
+    + displayInfo(): void
+}
+
+class HotelManager {
+    - ArrayList<Room> roomList
+    - ArrayList<Customer> customerList
+    - ArrayList<Booking> bookingList
+    + HotelManager()
+    + initializeRooms(): void
+    + addRoom(room: Room): void
+    + makeReservation(customer: Customer, room: Room, startDate: String, endDate: String): Booking
+    + cancelReservation(bookingID: int): void
+    + listAvailableRooms(select: int): void
+    + listAllCustomers(): void
+    + listBookings(): void
+    + displayBookingByID(bookingID: int): void
+    + findRoomByID(roomID: int): Room
+    + findCustomerByID(customerID: int): Customer
+    + addCustomer(customer: Customer): void
+    + applyDiscount(promoCode: String, roomID: int): void
+    + getRoomList(): ArrayList<Room>
+}
+
+' Inheritance relationships
+Room <|-- SingleRoom
+Room <|-- DoubleRoom
+Room <|-- SuiteRoom
+Services <|.. SuiteRoom
+
+' Associations
+HotelManager "1" *-- "*" Room : manages >
+HotelManager "1" *-- "*" Customer : manages >
+HotelManager "1" *-- "*" Booking : manages >
+Booking "1" --> "1" Customer : has >
+Booking "1" --> "1" Room : reserves >
+
+@enduml 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class HotelManager {
 
-    static private ArrayList<Room> roomList;
+    private ArrayList<Room> roomList;
     private ArrayList<Customer> customerList;
     private ArrayList<Booking> bookingList;
 
