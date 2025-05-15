@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.ArrayList;
 
 public class HotelManager {
-
+    static  
     private ArrayList<Room> roomList;
     private ArrayList<Customer> customerList;
     private ArrayList<Booking> bookingList;
@@ -77,53 +77,65 @@ public class HotelManager {
 
     // عرض الغرف المتاحة
     public void listAvailableRooms(int select) {
-        switch (select){
-            case 0: 
-                for (Room r : roomList) {
-                    if (r.IsAvailable()) {
-                        if (r instanceof SingleRoom){
-                            
-                            System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
-                        }
-                        if (r instanceof DoubleRoom){
-                            
-                            System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
-                        }
-                        if (r instanceof SuiteRoom){
-                            
-                            System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
-                        }
-                    }
-                }
-                break;
-            case 1: 
+        switch (select) {
+            case 0:
+                // Single Rooms
+                System.out.println("=======");
+                System.out.println("Single rooms");
+                System.out.println("=======");
                 for (Room r : roomList) {
                     if (r.IsAvailable() && r instanceof SingleRoom) {
-                        
-                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                        System.out.println(r.displayInfo());
                     }
                 }
-                break;
-            case 2: 
+                
+                // Double Rooms
+                System.out.println("\n=======");
+                System.out.println("Double rooms");
+                System.out.println("=======");
                 for (Room r : roomList) {
                     if (r.IsAvailable() && r instanceof DoubleRoom) {
-                        
-                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                        System.out.println(r.displayInfo());
                     }
                 }
-                break;
-            case 3: 
+                
+                // Suite Rooms
+                System.out.println("\n=======");
+                System.out.println("Suite rooms");
+                System.out.println("=======");
                 for (Room r : roomList) {
                     if (r.IsAvailable() && r instanceof SuiteRoom) {
-                        
+                        System.out.println(r.displayInfo());
+                    }
+                }
+                break;
+            case 1:
+                for (Room r : roomList) {
+                    if (r.IsAvailable() && r instanceof SingleRoom) {
+
                         System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
                     }
                 }
                 break;
-            
-            
+            case 2:
+                for (Room r : roomList) {
+                    if (r.IsAvailable() && r instanceof DoubleRoom) {
+
+                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                    }
+                }
+                break;
+            case 3:
+                for (Room r : roomList) {
+                    if (r.IsAvailable() && r instanceof SuiteRoom) {
+
+                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                    }
+                }
+                break;
+
         }
-        
+
     }
 
     // عرض جميع العملاء
@@ -132,21 +144,22 @@ public class HotelManager {
             c.displayInfo();
         }
     }
-    
-    
+
     // عرض جميع الحجوزات
     public void listBookings() {
         for (Booking b : bookingList) {
             b.displayInfo();
         }
     }
+
     public void displayBookingByID(int bookingID) {
         for (Booking b : bookingList) {
-            if ( bookingID == b.getBookingID()) {
+            if (bookingID == b.getBookingID()) {
                 b.displayInfo();
                 return;
             }
         }
+        System.out.println("No booking found with ID: " + bookingID);
     }
 
     // العثور على غرفة باستخدام RoomID
@@ -176,21 +189,48 @@ public class HotelManager {
 
     }
 
-    public void applyDiscount(String promoCode) {
+    public void applyDiscount(String promoCode,int roomID ) {
         if (promoCode.equals("seyam1")) {
-            System.out.println("Applying 20% discount on all available rooms.");
+            System.out.println("\nDiscount has been applied successfully!");
+            System.out.println("Applying 20% discount on your booked room.");
             for (Room room : roomList) {
-                double originalPrice = room.getPrice();
-                double discountedPrice = originalPrice * 0.8;
-                room.setPrice(discountedPrice);
-                System.out.println("New price for room " + room.getRoomID() + ": " + discountedPrice);
+                if (roomID == room.getRoomID()){
+                    double originalPrice = room.getPrice();
+                    double discountedPrice = originalPrice * 0.8;
+                    room.setPrice(discountedPrice);
+                    System.out.println("New price for room " + room.getRoomID() + ": " + discountedPrice);
+                }
+                
+                
             }
         } else {
             System.out.println("Invalid promo code.");
         }
     }
+<<<<<<< HEAD
    public ArrayList<Room> getRoomList() {
     return roomList;
+=======
+
+    public String getAvailableRoomsText() {
+        StringBuilder sb = new StringBuilder();
+        for (Room room : roomList) {
+            if (room.isAvailable) {
+                sb.append(room.toString()).append("\n");
+            }
+        }
+        return sb.toString();
+    }
+    public String getBookingDetailsByID(int bookingID) {
+    for (Booking booking : bookingList) { // assuming you have a list called bookings
+        if (booking.getBookingID() == bookingID) {
+            return booking.toString(); // or a custom formatted string
+        }
+    }
+    return "No booking found with ID: " + bookingID;
+}
+
+>>>>>>> main
 }
    public ArrayList<Booking> getBookingList() {
     return bookingList;

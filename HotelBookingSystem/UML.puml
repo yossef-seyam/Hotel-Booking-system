@@ -1,0 +1,35 @@
+@startuml
+abstract class com.mycompany.hotelbookingsystem.Room
+annotation java.lang.Override
+class com.mycompany.hotelbookingsystem.Booking
+class com.mycompany.hotelbookingsystem.Customer
+class com.mycompany.hotelbookingsystem.DoubleRoom
+class com.mycompany.hotelbookingsystem.HotelManager
+class com.mycompany.hotelbookingsystem.Main
+class com.mycompany.hotelbookingsystem.SingleRoom
+class com.mycompany.hotelbookingsystem.SuiteRoom
+class com.mycompany.hotelbookingsystem.TransportService
+class java.text.ParseException
+class java.text.SimpleDateFormat
+class java.util.ArrayList
+class java.util.Date
+class java.util.Scanner
+class javafx.application.Application
+interface com.mycompany.hotelbookingsystem.Services
+com.mycompany.hotelbookingsystem.Booking ..> java.util.Date
+com.mycompany.hotelbookingsystem.DoubleRoom --|> com.mycompany.hotelbookingsystem.Room
+com.mycompany.hotelbookingsystem.DoubleRoom ..> java.lang.Override
+com.mycompany.hotelbookingsystem.HotelManager ..> java.util.ArrayList
+com.mycompany.hotelbookingsystem.HotelManager ..> java.util.Date
+com.mycompany.hotelbookingsystem.Main ..> java.text.ParseException
+com.mycompany.hotelbookingsystem.Main ..> java.text.SimpleDateFormat
+com.mycompany.hotelbookingsystem.Main ..> java.util.Date
+com.mycompany.hotelbookingsystem.Main ..> java.util.Scanner
+com.mycompany.hotelbookingsystem.Main ..> javafx.application.Application
+com.mycompany.hotelbookingsystem.SingleRoom --|> com.mycompany.hotelbookingsystem.Room
+com.mycompany.hotelbookingsystem.SingleRoom ..> java.lang.Override
+com.mycompany.hotelbookingsystem.SuiteRoom --|> com.mycompany.hotelbookingsystem.Room
+com.mycompany.hotelbookingsystem.SuiteRoom ..> java.lang.Override
+com.mycompany.hotelbookingsystem.TransportService ..> java.lang.Override
+com.mycompany.hotelbookingsystem.TransportService --|> com.mycompany.hotelbookingsystem.Services
+@enduml
