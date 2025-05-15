@@ -50,8 +50,10 @@ public class HotelManager {
         if (room.IsAvailable()) {
             Booking booking = new Booking(customer, room, startDate, endDate);
             bookingList.add(booking);
+            addCustomer(customer);
             room.setIsAvailable(false); // تغيير حالة الغرفة إلى غير متاحة
             System.out.println("Booking created for customer " + customer.getName());
+            System.out.println("your booking ID " + booking.getBookingID());
             return booking;
         } else {
             System.out.println("Room is not available.");
@@ -64,6 +66,7 @@ public class HotelManager {
         for (Booking b : bookingList) {
             if (bookingID == b.getBookingID()) {
                 bookingList.remove(b);
+                customerList.remove(b.getCustomer());
                 b.getRoom().setIsAvailable(true); // إعادة الغرفة لتكون متاحة
                 System.out.println("Booking ID [" + bookingID + "] has been cancelled.");
                 return;
@@ -78,13 +81,25 @@ public class HotelManager {
             case 0: 
                 for (Room r : roomList) {
                     if (r.IsAvailable()) {
-                        System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                        if (r instanceof SingleRoom){
+                            
+                            System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                        }
+                        if (r instanceof DoubleRoom){
+                            
+                            System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                        }
+                        if (r instanceof SuiteRoom){
+                            
+                            System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
+                        }
                     }
                 }
                 break;
             case 1: 
                 for (Room r : roomList) {
                     if (r.IsAvailable() && r instanceof SingleRoom) {
+                        
                         System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
                     }
                 }
@@ -92,6 +107,7 @@ public class HotelManager {
             case 2: 
                 for (Room r : roomList) {
                     if (r.IsAvailable() && r instanceof DoubleRoom) {
+                        
                         System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
                     }
                 }
@@ -99,6 +115,7 @@ public class HotelManager {
             case 3: 
                 for (Room r : roomList) {
                     if (r.IsAvailable() && r instanceof SuiteRoom) {
+                        
                         System.out.println(r.displayInfo()); // استدعاء displayInfo() لكل غرفة
                     }
                 }
@@ -115,11 +132,20 @@ public class HotelManager {
             c.displayInfo();
         }
     }
-
+    
+    
     // عرض جميع الحجوزات
     public void listBookings() {
         for (Booking b : bookingList) {
             b.displayInfo();
+        }
+    }
+    public void displayBookingByID(int bookingID) {
+        for (Booking b : bookingList) {
+            if ( bookingID == b.getBookingID()) {
+                b.displayInfo();
+                return;
+            }
         }
     }
 
