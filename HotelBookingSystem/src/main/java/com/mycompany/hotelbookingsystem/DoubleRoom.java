@@ -11,19 +11,19 @@ package com.mycompany.hotelbookingsystem;
 public class DoubleRoom extends Room 
 {
  
- private boolean SeaView;
+ private boolean hasBalcony;
 
-    public DoubleRoom(boolean SeaView, String roomType ,double price,int roomID) {
+    public DoubleRoom(boolean hasBalcony, String roomType ,double price,int roomID) {
         super(roomType,price,roomID);
-        this.SeaView = SeaView;
+        this.hasBalcony = hasBalcony;
     }
 
-    public boolean isSeaView() {
-        return SeaView;
+    public boolean hasBalcony() {
+        return hasBalcony;
     }
 
-    public void setSeaView(boolean SeaView) {
-        this.SeaView = SeaView;
+    public void sethasBalcony(boolean hasBalcony) {
+        this.hasBalcony = hasBalcony;
     }
     
     @Override

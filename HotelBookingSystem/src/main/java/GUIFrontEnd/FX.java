@@ -5,9 +5,17 @@
 package GUIFrontEnd;
 import com.mycompany.hotelbookingsystem.HotelManager;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class FX extends Application {
@@ -19,14 +27,25 @@ public class FX extends Application {
         hotelManager.initializeRooms();
 
         // Buttons
-        Button btnAvailableRooms = new Button("عرض الغرف المتاحة");
-        Button btnAddBooking = new Button("إضافة حجز");
-        Button btnCancelBooking = new Button("إلغاء حجز");
-        Button btnShowBookings = new Button("عرض الحجوزات");
-        Button btnShowCustomers = new Button("عرض العملاء");
-        Button btnRequestService = new Button("طلب خدمة");
-        Button btnApplyDiscount = new Button("تطبيق كود خصم");
-        Button btnSearchBooking = new Button("بحث عن حجز");
+        GridPane pane = new GridPane();
+        pane.setAlignment(Pos.CENTER);
+        pane.setPadding(new Insets(15));
+        pane.setHgap(10);
+        pane.setVgap(10);
+        Label welcomeLabel = new Label("Welcome to Our Hotel");
+        welcomeLabel.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+        Image image = new Image("file:C:/Users/user/Downloads/Hotel.jpg");
+        ImageView imageview = new ImageView(image);
+        imageview.setFitWidth(300);
+        imageview.setFitHeight(300);
+        Button btnAvailableRooms = new Button("Show Available Rooms");
+        Button btnAddBooking = new Button("Add Booking");
+        Button btnCancelBooking = new Button("Cancel Booking");
+        Button btnShowBookings = new Button("Show Bookings");
+        Button btnShowCustomers = new Button("Show Customers");
+        Button btnRequestService = new Button("Request Service");
+        Button btnApplyDiscount = new Button("Apply Discount");
+        Button btnSearchBooking = new Button("Search Booking");
 
         // Button Actions (placeholder)
         btnAvailableRooms.setOnAction(e -> RoomView.display(hotelManager));
@@ -39,20 +58,20 @@ public class FX extends Application {
         btnSearchBooking.setOnAction(e -> SearchBookingView.display(hotelManager));
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(
+          layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(welcomeLabel,imageview,
             btnAvailableRooms, btnAddBooking, btnCancelBooking,
             btnShowBookings, btnShowCustomers,
             btnRequestService, btnApplyDiscount, btnSearchBooking
         );
 
-        Scene scene = new Scene(layout, 300, 400);
+        Scene scene = new Scene(layout, 500, 700);
         primaryStage.setTitle("Hotel Management System");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
-

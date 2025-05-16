@@ -185,7 +185,7 @@ public class Main {
                                     if (answer.equals("yes")) {
                                         System.out.println("Please enter your promo code:");
                                         String promoCode = input.nextLine();
-                                        Hotel.applyDiscount(promoCode, room.roomID);
+                                        Hotel.applyDiscount(promoCode);
                                     } else if (!answer.equals("no")) {
                                         throw new IllegalArgumentException("Please enter either 'yes' or 'no'");
                                     }

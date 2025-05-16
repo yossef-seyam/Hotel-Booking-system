@@ -27,15 +27,27 @@ public class HotelManager {
     public void initializeRooms() {
         // إضافة 10 غرف Single
         for (int i = 1; i <= 10; i++) {
-            addRoom(new SingleRoom(false, "Single Room", 100.0, 100 + i)); // السعر 100
+            if (i < 5) {
+                addRoom(new SingleRoom(false, "Single Room", 100.0, 100 + i)); 
+
+            } else {
+                addRoom(new SingleRoom(true, "Single Room", 150.0, 100 + i)); 
+
+            }
         }
         // إضافة 10 غرف Double
         for (int i = 1; i <= 10; i++) {
-            addRoom(new DoubleRoom(true, "Double Room", 150.0, 200 + i)); // السعر 150
+            if (i < 5) {
+                addRoom(new DoubleRoom(false, "Double Room", 200.0, 200 + i)); 
+
+            } else {
+
+                addRoom(new DoubleRoom(false, "Double Room", 250.0, 200 + i));
+            }
         }
         // إضافة 5 أجنحة Suite
         for (int i = 1; i <= 5; i++) {
-            addRoom(new SuiteRoom("Suite Room", 300.0, 300 + i)); // السعر 300
+            addRoom(new SuiteRoom(true, "Suite Room", 300.0, 300 + i));
         }
     }
 
@@ -189,17 +201,17 @@ public class HotelManager {
 
     }
 
-    public void applyDiscount(String promoCode, int roomID) {
+    public void applyDiscount(String promoCode) {
         if (promoCode.equals("seyam1")) {
             System.out.println("\nDiscount has been applied successfully!");
             System.out.println("Applying 20% discount on your booked room.");
             for (Room room : roomList) {
-                if (roomID == room.getRoomID()) {
+                
                     double originalPrice = room.getPrice();
                     double discountedPrice = originalPrice * 0.8;
                     room.setPrice(discountedPrice);
                     System.out.println("New price for room " + room.getRoomID() + ": " + discountedPrice);
-                }
+                
 
             }
         } else {
