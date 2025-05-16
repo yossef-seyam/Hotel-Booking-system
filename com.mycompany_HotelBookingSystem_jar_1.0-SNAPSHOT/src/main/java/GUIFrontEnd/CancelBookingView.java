@@ -10,7 +10,6 @@ package GUIFrontEnd;
  */
 import com.mycompany.hotelbookingsystem.HotelManager;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,26 +22,25 @@ public class CancelBookingView {
 
     public static void display(HotelManager hotelManager) {
         Stage window = new Stage();
-        window.setTitle("Cancel Booking ");
+        window.setTitle("إلغاء حجز");
 
-        Label label = new Label("Enter Booking Number  :");
+        Label label = new Label("أدخل رقم الحجز:");
         TextField bookingIdField = new TextField();
 
-        Button cancelButton = new Button("Cancel Booking ");
+        Button cancelButton = new Button("إلغاء الحجز");
         cancelButton.setOnAction(e -> {
             try {
                 int bookingId = Integer.parseInt(bookingIdField.getText());
                 hotelManager.cancelReservation(bookingId);
-                showAlert(Alert.AlertType.INFORMATION, "   Booking is Cancelled Succefully.");
+                showAlert(Alert.AlertType.INFORMATION, "تم إلغاء الحجز بنجاح.");
                 window.close();
             } catch (NumberFormatException ex) {
-                showAlert(Alert.AlertType.ERROR, "  Please Enter The Correct Number .");
+                showAlert(Alert.AlertType.ERROR, "الرجاء إدخال رقم صحيح.");
             }
         });
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20));
-        layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(label, bookingIdField, cancelButton);
 
         Scene scene = new Scene(layout, 300, 150);

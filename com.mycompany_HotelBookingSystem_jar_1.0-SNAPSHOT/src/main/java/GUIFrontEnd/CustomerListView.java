@@ -10,7 +10,6 @@ package GUIFrontEnd;
  */
 import com.mycompany.hotelbookingsystem.Customer;
 import com.mycompany.hotelbookingsystem.HotelManager;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -21,7 +20,7 @@ public class CustomerListView {
 
     public static void display(HotelManager hotelManager) {
         Stage window = new Stage();
-        window.setTitle(" Customer List");
+        window.setTitle("قائمة العملاء");
 
         ListView<String> customerListView = new ListView<>();
 
@@ -32,11 +31,10 @@ public class CustomerListView {
             customerListView.getItems().add(info);
         }
 
-        Button closeBtn = new Button("Exit");
+        Button closeBtn = new Button("إغلاق");
         closeBtn.setOnAction(e -> window.close());
 
         VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(customerListView, closeBtn);
 
         Scene scene = new Scene(layout, 400, 300);

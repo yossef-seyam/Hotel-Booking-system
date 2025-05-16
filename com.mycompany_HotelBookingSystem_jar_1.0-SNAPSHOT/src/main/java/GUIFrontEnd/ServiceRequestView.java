@@ -11,7 +11,6 @@ package GUIFrontEnd;
 import com.mycompany.hotelbookingsystem.HotelManager;
 import com.mycompany.hotelbookingsystem.Room;
 import com.mycompany.hotelbookingsystem.Services;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -21,16 +20,15 @@ public class ServiceRequestView {
 
     public static void display(HotelManager hotelManager) {
         Stage window = new Stage();
-        window.setTitle("Request Service ");
+        window.setTitle("طلب خدمة");
 
         TextField roomIdField = new TextField();
-        roomIdField.setMaxSize(200, 70);
-        roomIdField.setPromptText(" Enter Room Id ");
+        roomIdField.setPromptText("أدخل رقم الغرفة");
 
         ChoiceBox<String> serviceChoice = new ChoiceBox<>();
         serviceChoice.getItems().addAll("Cleaning", "Laundry", "Food");
 
-        Button requestButton = new Button("Request");
+        Button requestButton = new Button("طلب");
         Label resultLabel = new Label();
 
         requestButton.setOnAction(e -> {
@@ -42,24 +40,23 @@ public class ServiceRequestView {
                 if (room instanceof Services) {
                     ((Services) room).orderService(serviceType);
                     double cost = ((Services) room).getServiceCost(serviceType);
-                    resultLabel.setText("  Service Request Done: " + serviceType + " Cost: " + cost);
+                    resultLabel.setText("تم طلب الخدمة: " + serviceType + " | التكلفة: " + cost);
                 } else {
-                    resultLabel.setText(" Sorry, Room Can't Have Services ");
+                    resultLabel.setText("الغرفة لا تدعم الخدمات.");
                 }
 
             } catch (NumberFormatException ex) {
-                resultLabel.setText(" Room ID isn't True");
+                resultLabel.setText("رقم الغرفة غير صالح.");
             } catch (Exception ex) {
-                resultLabel.setText(" Error While Requesting Service");
+                resultLabel.setText("حدث خطأ أثناء معالجة الطلب.");
             }
         });
 
         VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(
-                new Label("Room ID :"),
+                new Label("رقم الغرفة:"),
                 roomIdField,
-                new Label("Service Type :"),
+                new Label("نوع الخدمة:"),
                 serviceChoice,
                 requestButton,
                 resultLabel

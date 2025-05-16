@@ -12,7 +12,6 @@ import com.mycompany.hotelbookingsystem.Customer;
 import com.mycompany.hotelbookingsystem.HotelManager;
 import com.mycompany.hotelbookingsystem.Room;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -22,24 +21,24 @@ public class AddBookingView {
 
     public static void display(HotelManager hotelManager) {
         Stage window = new Stage();
-        window.setTitle("Add New Booking");
+        window.setTitle("إضافة حجز جديد");
 
-        Label nameLabel = new Label("Customer Name");
+        Label nameLabel = new Label("اسم العميل:");
         TextField nameInput = new TextField();
 
-        Label emailLabel = new Label("Email");
+        Label emailLabel = new Label("البريد الإلكتروني:");
         TextField emailInput = new TextField();
 
-        Label roomIdLabel = new Label("Room ID :");
+        Label roomIdLabel = new Label("رقم الغرفة:");
         TextField roomIdInput = new TextField();
 
-        Label startDateLabel = new Label(" StartDate:");
+        Label startDateLabel = new Label("تاريخ البداية:");
         TextField startDateInput = new TextField();
 
-        Label endDateLabel = new Label(" EndDate:");
+        Label endDateLabel = new Label("تاريخ النهاية:");
         TextField endDateInput = new TextField();
 
-        Button submitBtn = new Button("Confirm Booking ");
+        Button submitBtn = new Button("تأكيد الحجز");
         Label statusLabel = new Label();
 
         submitBtn.setOnAction(e -> {
@@ -52,27 +51,26 @@ public class AddBookingView {
 
                 Room room = hotelManager.findRoomByID(roomId);
                 if (room == null) {
-                    statusLabel.setText( " The Room Id Doesn't Exists");
+                    statusLabel.setText("رقم الغرفة غير موجود.");
                     return;
                 }
                 if (!room.IsAvailable()) {
-                    statusLabel.setText(" The Room isn't Available");
+                    statusLabel.setText("الغرفة غير متاحة.");
                     return;
                 }
 
                 Customer customer = new Customer(name, email);
                 hotelManager.makeReservation(customer, room, startDate, endDate);
-                statusLabel.setText("Booking is Done");
+                statusLabel.setText("تم الحجز بنجاح!");
 
             } catch (NumberFormatException ex) {
-                statusLabel.setText(" The Room ID Must be Number");
+                statusLabel.setText("رقم الغرفة يجب أن يكون رقماً.");
             } catch (Exception ex) {
-                statusLabel.setText("Error Occured While Booking   .");
+                statusLabel.setText("حدث خطأ أثناء الحجز.");
             }
         });
 
         VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(10));
         layout.getChildren().addAll(
             nameLabel, nameInput,

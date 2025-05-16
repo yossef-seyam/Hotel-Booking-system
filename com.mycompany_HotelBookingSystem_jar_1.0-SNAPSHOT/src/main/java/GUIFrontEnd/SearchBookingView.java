@@ -10,7 +10,6 @@ package GUIFrontEnd;
  */
 import com.mycompany.hotelbookingsystem.Booking;
 import com.mycompany.hotelbookingsystem.HotelManager;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -20,13 +19,13 @@ public class SearchBookingView {
 
     public static void display(HotelManager hotelManager) {
         Stage window = new Stage();
-        window.setTitle("Search For Booking  ");
+        window.setTitle("البحث عن حجز");
 
-        Label idLabel = new Label(" Booking Id:");
+        Label idLabel = new Label("أدخل رقم الحجز:");
         TextField idField = new TextField();
         idField.setPromptText("Booking ID");
 
-        Button searchButton = new Button("Search");
+        Button searchButton = new Button("بحث");
         Label resultLabel = new Label();
 
         searchButton.setOnAction(e -> {
@@ -49,15 +48,14 @@ public class SearchBookingView {
                         " | To: " + foundBooking.getCheckEndDate()
                     );
                 } else {
-                    resultLabel.setText("  Booking iisn't Found.");
+                    resultLabel.setText("لم يتم العثور على الحجز.");
                 }
             } catch (NumberFormatException ex) {
-                resultLabel.setText  ("Enter Valid ID ");
+                resultLabel.setText("يرجى إدخال رقم صالح.");
             }
         });
 
         VBox layout = new VBox(10);
-           layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(idLabel, idField, searchButton, resultLabel);
 
         Scene scene = new Scene(layout, 400, 200);
