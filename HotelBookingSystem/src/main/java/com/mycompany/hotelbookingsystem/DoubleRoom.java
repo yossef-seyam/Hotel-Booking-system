@@ -29,7 +29,7 @@ public class DoubleRoom extends Room
     @Override
     public String displayInfo()
     {
-    return "Room Type:" + roomType + " it's Price:" + price + " The Room Id:" + roomID ;
+    return "Room Type:" + roomType + " it's Price:" + price + " The Room Id:" + roomID +"hasBalcony:" + hasBalcony ;
     
     }
  

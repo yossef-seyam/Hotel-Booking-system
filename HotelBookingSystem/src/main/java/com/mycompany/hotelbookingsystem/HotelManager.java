@@ -27,11 +27,22 @@ public class HotelManager {
     public void initializeRooms() {
         // إضافة 10 غرف Single
         for (int i = 1; i <= 10; i++) {
-            addRoom(new SingleRoom(false, "Single Room", 100.0, 100 + i)); // السعر 100
+            if(i<5){
+            addRoom(new SingleRoom(false, "Single Room", 100.0, 100 + i));
+            }// السعر 100
+            else{
+                addRoom(new SingleRoom(true, "Single Room", 150.0, 100 + i));
+                
+            }
         }
         // إضافة 10 غرف Double
         for (int i = 1; i <= 10; i++) {
-            addRoom(new DoubleRoom(true, "Double Room", 150.0, 200 + i)); // السعر 150
+            if(i<5){
+            addRoom(new DoubleRoom(false, "Double Room", 200.0, 200 + i)); // السعر 150
+            }
+            else{
+                addRoom(new DoubleRoom(true, "Double Room", 250.0, 200 + i));
+            }
         }
         // إضافة 5 أجنحة Suite
         for (int i = 1; i <= 5; i++) {
@@ -176,14 +187,22 @@ public class HotelManager {
 
     }
 
-    public void applyDiscount(String promoCode) {
+    public void applyDiscount(String promoCode,int roomid) {
         if (promoCode.equals("seyam1")) {
             System.out.println("Applying 20% discount on all available rooms.");
             for (Room room : roomList) {
+                if (roomid == room.getRoomID()) {
                 double originalPrice = room.getPrice();
                 double discountedPrice = originalPrice * 0.8;
                 room.setPrice(discountedPrice);
                 System.out.println("New price for room " + room.getRoomID() + ": " + discountedPrice);
+               return;
+            }
+                else{
+                    System.out.println("Invalid Room id");
+                    
+                }
+            
             }
         } else {
             System.out.println("Invalid promo code.");
@@ -198,6 +217,15 @@ public class HotelManager {
       public ArrayList<Customer> getCustomerList() {
     return customerList;
 }
+
+    public boolean isRoomBooked(int id) {
+           for (Booking booking : bookingList) {
+        if (booking.getRoom().getRoomID() == id) {
+            return true;
+        }
+    }
+    return false;
+    }
       
    
 

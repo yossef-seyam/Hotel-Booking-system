@@ -4,27 +4,17 @@
  */
 package GUIFrontEnd;
 
-import com.mycompany.hotelbookingsystem.DoubleRoom;
-import com.mycompany.hotelbookingsystem.HotelManager;
-import com.mycompany.hotelbookingsystem.Room;
-import com.mycompany.hotelbookingsystem.SingleRoom;
-import com.mycompany.hotelbookingsystem.SuiteRoom;
+import com.mycompany.hotelbookingsystem.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
-/**
- *
- * @author dell
- */
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class RoomView {
@@ -32,84 +22,84 @@ public class RoomView {
     public static void display(HotelManager hotelManager) {
         Stage window = new Stage();
         window.setTitle("Show Available Rooms");
-        VBox Main = new VBox(10);
-        Main.setAlignment(Pos.CENTER);
 
-        // منطقة عرض الغرف
-TextArea roomDisplayArea = new TextArea();
-roomDisplayArea.setEditable(false);
+        // Images
+        ImageView imgSingle = new ImageView(new Image("file:/E:/Singleroom.jpg"));
+        ImageView imgDouble = new ImageView(new Image("file:/E:/Doubleroom.jpg"));
+        ImageView imgSuite = new ImageView(new Image("file:/E:/Suiteroom.jpg"));
 
-// الأزرار
-//Button showAllButton = new Button("كل الغرف");
-            ImageView imageviewsingle = new ImageView(new Image("file:/C:/Single_Room.jpg"));
-            ImageView imageviewdouble = new ImageView(new Image("file:/C:/DoubleRoom.jpg"));
-            ImageView imageviewsuite = new ImageView(new Image("file:/C:/Suite.jpg"));
-
-            imageviewsingle.setFitWidth(200);
-            imageviewsingle.setFitHeight(200);
-            imageviewdouble.setFitWidth(200);
-            imageviewdouble.setFitHeight(200);
-            imageviewsuite.setFitWidth(200);
-            imageviewsuite.setFitHeight(200);
-
-            // Add images in a horizontal box
-            HBox roomsBox = new HBox(20);
-            roomsBox.setAlignment(Pos.CENTER);
-            roomsBox.setPadding(new Insets(20));
-            roomsBox.getChildren().addAll(imageviewsingle, imageviewdouble, imageviewsuite);
-
-            // Room type buttons
-            Button btnSingle = new Button("SingleRoom");
-            Button btnDouble = new Button("DoubleRoom");
-            Button btnSuite = new Button("Suite");
-
-
-  btnSingle.setOnAction(e -> {
-    roomDisplayArea.clear();
-    for (Room r : hotelManager.getRoomList()) {
-        if (r instanceof SingleRoom && r.IsAvailable()) {
-            roomDisplayArea.appendText(r.displayInfo() + "\n");
+        for (ImageView iv : new ImageView[]{imgSingle, imgDouble, imgSuite}) {
+            iv.setFitWidth(200);
+            iv.setFitHeight(150);
         }
-    }
-});
 
- btnDouble.setOnAction(e -> {
-    roomDisplayArea.clear();
-    for (Room r : hotelManager.getRoomList()) {
-        if (r instanceof DoubleRoom && r.IsAvailable()) {
-            roomDisplayArea.appendText(r.displayInfo() + "\n");
-        }
-    }
-});
+        HBox imagesBox = new HBox(20, imgSingle, imgDouble, imgSuite);
+        imagesBox.setAlignment(Pos.CENTER);
+        imagesBox.setPadding(new Insets(10));
 
-   btnSuite.setOnAction(e -> {
-    roomDisplayArea.clear();
-    for (Room r : hotelManager.getRoomList()) {
-        if (r instanceof SuiteRoom && r.IsAvailable()) {
-            roomDisplayArea.appendText(r.displayInfo() + "\n");
-        }
-    }
-});
+        // Buttons
+        Button btnSingle = new Button("Single Room");
+        Button btnDouble = new Button("Double Room");
+        Button btnSuite = new Button("Suite Room");
 
-// وضع الأزرار في HBox
-            HBox buttonBox = new HBox(180);
-            buttonBox.setAlignment(Pos.CENTER);
-            buttonBox.getChildren().addAll(btnSingle, btnDouble, btnSuite);
+        HBox buttonBox = new HBox(40, btnSingle, btnDouble, btnSuite);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(5));
 
-// وضع كل شيء في VBox
-        VBox mainBox = new VBox(10);
+        // Table
+        TableView<RoomTableItem> table = new TableView<>();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-//        HBox topControls = new HBox(10);
-         mainBox.setAlignment(Pos.CENTER);
-        mainBox.getChildren().addAll(roomsBox, buttonBox);
+        TableColumn<RoomTableItem, String> typeCol = new TableColumn<>("Room Type");
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("roomType"));
 
-        BorderPane layout = new BorderPane();
-        layout.setTop(mainBox);
-        layout.setCenter(roomDisplayArea);
+        TableColumn<RoomTableItem, Double> priceCol = new TableColumn<>("Price");
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        Scene scene = new Scene(layout, 700, 700);
+        TableColumn<RoomTableItem, Integer> idCol = new TableColumn<>("Room ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+
+        TableColumn<RoomTableItem, String> seaViewCol = new TableColumn<>("Sea View");
+        seaViewCol.setCellValueFactory(new PropertyValueFactory<>("seaView"));
+
+        TableColumn<RoomTableItem, String> balconyCol = new TableColumn<>("Has Balcony");
+        balconyCol.setCellValueFactory(new PropertyValueFactory<>("hasBalcony"));
+
+        TableColumn<RoomTableItem, String> livingRoomCol = new TableColumn<>("Has Living Room");
+        livingRoomCol.setCellValueFactory(new PropertyValueFactory<>("hasLivingRoom"));
+
+        table.getColumns().addAll(typeCol, priceCol, idCol, seaViewCol, balconyCol, livingRoomCol);
+
+        // Button actions
+        btnSingle.setOnAction(e -> {
+            table.setItems(getAvailableRoomsOfType(hotelManager, SingleRoom.class));
+        });
+
+        btnDouble.setOnAction(e -> {
+            table.setItems(getAvailableRoomsOfType(hotelManager, DoubleRoom.class));
+        });
+
+        btnSuite.setOnAction(e -> {
+            table.setItems(getAvailableRoomsOfType(hotelManager, SuiteRoom.class));
+        });
+
+        // Layout
+        VBox layout = new VBox(10, imagesBox, buttonBox, table);
+        layout.setPadding(new Insets(10));
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout, 800, 600);
         window.setScene(scene);
         window.show();
     }
-}
 
+    private static ObservableList<RoomTableItem> getAvailableRoomsOfType(HotelManager hotelManager, Class<?> roomClass) {
+        ObservableList<RoomTableItem> filtered = FXCollections.observableArrayList();
+        for (Room r : hotelManager.getRoomList()) {
+            if (roomClass.isInstance(r) && r.IsAvailable()) {
+                filtered.add(new RoomTableItem(r));
+            }
+        }
+        return filtered;
+    }
+}

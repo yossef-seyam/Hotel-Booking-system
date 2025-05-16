@@ -33,26 +33,37 @@ public class ServiceRequestView {
         Button requestButton = new Button("Request");
         Label resultLabel = new Label();
 
-        requestButton.setOnAction(e -> {
-            try {
-                int roomId = Integer.parseInt(roomIdField.getText());
-                String serviceType = serviceChoice.getValue();
+       requestButton.setOnAction(e -> {
+    try {
+        int roomId = Integer.parseInt(roomIdField.getText());
+        String serviceType = serviceChoice.getValue();
 
-                Room room = hotelManager.findRoomByID(roomId);
-                if (room instanceof Services) {
-                    ((Services) room).orderService(serviceType);
-                    double cost = ((Services) room).getServiceCost(serviceType);
-                    resultLabel.setText("  Service Request Done: " + serviceType + " Cost: " + cost);
-                } else {
-                    resultLabel.setText(" Sorry, Room Can't Have Services ");
-                }
+        Room room = hotelManager.findRoomByID(roomId);
 
-            } catch (NumberFormatException ex) {
-                resultLabel.setText(" Room ID isn't True");
-            } catch (Exception ex) {
-                resultLabel.setText(" Error While Requesting Service");
-            }
-        });
+        // تحقق هل الغرفة محجوزة أولاً
+        boolean isBooked = hotelManager.getBookingList().stream()
+            .anyMatch(booking -> booking.getRoom().getRoomID() == roomId);
+
+        if (!isBooked) {
+            resultLabel.setText("This room is not booked.");
+            return;
+        }
+
+        if (room instanceof Services) {
+            ((Services) room).orderService(serviceType);
+            double cost = ((Services) room).getServiceCost(serviceType);
+            resultLabel.setText("Service Request Done: " + serviceType + " | Cost: " + cost);
+        } else {
+            resultLabel.setText("Sorry, this room does not support services.");
+        }
+
+    } catch (NumberFormatException ex) {
+        resultLabel.setText("Invalid Room ID.");
+    } catch (Exception ex) {
+        resultLabel.setText("Error while requesting service.");
+    }
+});
+
 
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);

@@ -19,9 +19,6 @@ public class Customer {
         this.email = email;
     }
 
-    public void requestService(String serviceType) {
-        System.out.println("Customer [" + name + "] requested service: " + serviceType);
-    }
 
     public void displayInfo() {
         System.out.println("Customer ID: " + ID);

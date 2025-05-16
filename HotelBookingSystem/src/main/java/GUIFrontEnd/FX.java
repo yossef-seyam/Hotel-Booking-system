@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GUIFrontEnd;
+
 import com.mycompany.hotelbookingsystem.HotelManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -10,12 +11,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class FX extends Application {
@@ -26,18 +26,22 @@ public class FX extends Application {
     public void start(Stage primaryStage) {
         hotelManager.initializeRooms();
 
-        // Buttons
-        GridPane pane = new GridPane();
-        pane.setAlignment(Pos.CENTER);
-        pane.setPadding(new Insets(15));
-        pane.setHgap(10);
-        pane.setVgap(10);
+        // Background image
+        Image backgroundImage = new Image("file:/E:/hotel.jpg");
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(800);
+        backgroundView.setFitHeight(600);
+        backgroundView.setPreserveRatio(false);
+
+        // Overlay layer (dark transparent rectangle)
+        Rectangle overlay = new Rectangle(800, 600);
+        overlay.setFill(Color.rgb(0, 0, 0, 0.4));
+
+        // Welcome label
         Label welcomeLabel = new Label("Welcome to Our Hotel");
-        welcomeLabel.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
-        Image image = new Image("file:/C:/Hotel.jpg");
-        ImageView imageview = new ImageView(image);
-        imageview.setFitWidth(300);
-        imageview.setFitHeight(300);
+        welcomeLabel.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;");
+
+        // Buttons
         Button btnAvailableRooms = new Button("Show Available Rooms");
         Button btnAddBooking = new Button("Add Booking");
         Button btnCancelBooking = new Button("Cancel Booking");
@@ -47,7 +51,16 @@ public class FX extends Application {
         Button btnApplyDiscount = new Button("Apply Discount");
         Button btnSearchBooking = new Button("Search Booking");
 
-        // Button Actions (placeholder)
+        // Button styling
+        Button[] buttons = {btnAvailableRooms, btnAddBooking, btnCancelBooking,
+                            btnShowBookings, btnShowCustomers,
+                            btnRequestService, btnApplyDiscount, btnSearchBooking};
+        for (Button b : buttons) {
+            b.setPrefWidth(250);
+            b.setStyle("-fx-font-size: 14px;");
+        }
+
+        // Button actions
         btnAvailableRooms.setOnAction(e -> RoomView.display(hotelManager));
         btnAddBooking.setOnAction(e -> AddBookingView.display(hotelManager));
         btnCancelBooking.setOnAction(e -> CancelBookingView.display(hotelManager));
@@ -57,15 +70,18 @@ public class FX extends Application {
         btnApplyDiscount.setOnAction(e -> DiscountView.display(hotelManager));
         btnSearchBooking.setOnAction(e -> SearchBookingView.display(hotelManager));
 
-        VBox layout = new VBox(10);
-          layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(welcomeLabel,imageview,
-            btnAvailableRooms, btnAddBooking, btnCancelBooking,
-            btnShowBookings, btnShowCustomers,
-            btnRequestService, btnApplyDiscount, btnSearchBooking
-        );
+        // VBox for content
+        VBox content = new VBox(15);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(20));
+        content.getChildren().addAll(welcomeLabel);
+        content.getChildren().addAll(buttons);
 
-        Scene scene = new Scene(layout, 500, 700);
+        // Main layout with overlay
+        StackPane root = new StackPane();
+        root.getChildren().addAll(backgroundView, overlay, content);
+
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("Hotel Management System");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -75,3 +91,4 @@ public class FX extends Application {
         launch(args);
     }
 }
+
