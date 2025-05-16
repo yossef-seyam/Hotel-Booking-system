@@ -37,12 +37,12 @@ public class Main {
                 System.out.println("Please select one of the options :");
                 System.out.println("=======================");
                 System.out.println("1) View available rooms");
-                System.out.println("2) View room offers");
-                System.out.println("3) book a room");
-                System.out.println("4) view your booking details");
-                System.out.println("5) cancel a reservation");
-                System.out.println("6) Help guide");
-                System.out.println("7) Exit");
+                //System.out.println("2) View room service");
+                System.out.println("2) book a room");
+                System.out.println("3) view your booking details");
+                System.out.println("4) cancel a reservation");
+                System.out.println("5) Help guide");
+                System.out.println("6) Exit");
                 
                 int choose = input.nextInt();
                 
@@ -50,33 +50,10 @@ public class Main {
                     case 1:
                         Hotel.listAvailableRooms(0);
                         break;
+//                    case 2:
+//                        
+//                        break;
                     case 2:
-                        /*
-                        System.out.println("Do you have a promo code? (yes/no):");
-                        input.nextLine(); // Clear buffer
-                        String answer = input.nextLine().toLowerCase();
-                        
-                        if (answer.equals("yes")) {
-                            System.out.println("Please enter your promo code:");
-                            String promoCode = input.nextLine();
-                            
-                            if (promoCode.equals("seyam1")) {
-                                Hotel.applyDiscount(promoCode);
-                                System.out.println("\nDiscount has been applied successfully!");
-                                System.out.println("20% discount has been applied to all room prices.");
-                                System.out.println("\nUpdated room prices:");
-                                Hotel.listAvailableRooms(0);
-                            } else {
-                                System.out.println("Invalid promo code. Please try again.");
-                            }
-                        } else if (answer.equals("no")) {
-                            System.out.println("No problem! You can continue booking at regular prices.");
-                        } else {
-                            System.out.println("Invalid input. Please enter 'yes' or 'no'.");
-                        }
-                         */
-                        break;
-                    case 3:
                         try {
                             System.out.println("Please Enter your name, your Email:");
                             System.out.println("===================================");
@@ -185,7 +162,9 @@ public class Main {
                                     if (answer.equals("yes")) {
                                         System.out.println("Please enter your promo code:");
                                         String promoCode = input.nextLine();
-                                        Hotel.applyDiscount(promoCode);
+                                        System.out.println("Please enter your room ID:");
+                                        int roomID = input.nextInt();
+                                        Hotel.applyDiscount(promoCode,roomID);
                                     } else if (!answer.equals("no")) {
                                         throw new IllegalArgumentException("Please enter either 'yes' or 'no'");
                                     }
@@ -210,7 +189,7 @@ public class Main {
                             System.out.println("Error: " + e.getMessage());
                         }
                         break;
-                    case 4:
+                    case 3:
                         if (isFirst == 0) {
                             System.out.println("No bookings have been done yet");
                             break;
@@ -225,7 +204,7 @@ public class Main {
                             input.nextLine(); // Clear buffer
                         }
                         break;
-                    case 5:
+                    case 4:
                         if (isFirst == 0) {
                             System.out.println("No bookings have been done yet");
                             break;
@@ -239,7 +218,7 @@ public class Main {
                             input.nextLine(); // Clear buffer
                         }
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("\n=========================");
                         System.out.println("       HELP GUIDE        ");
                         System.out.println("=========================");
@@ -278,7 +257,7 @@ public class Main {
                         System.out.println("Available 24/7 for assistance");
                         System.out.println("=========================\n");
                         break;
-                    case 7:
+                    case 6:
                         System.out.println("Thank you for choosing ELSONS Hotel. Goodbye!");
                         end = false;
                         break;
